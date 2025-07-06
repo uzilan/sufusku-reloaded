@@ -1,0 +1,24 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="32" height="32" fill="#f8f9fa"/>
+  
+  <!-- Grid lines -->
+  <rect x="2" y="2" width="28" height="28" stroke="#6c757d" stroke-width="1" fill="none"/>
+  
+  <!-- Thicker lines for 3x3 sections -->
+  <line x1="12" y1="2" x2="12" y2="30" stroke="#495057" stroke-width="2"/>
+  <line x1="20" y1="2" x2="20" y2="30" stroke="#495057" stroke-width="2"/>
+  <line x1="2" y1="12" x2="30" y2="12" stroke="#495057" stroke-width="2"/>
+  <line x1="2" y1="20" x2="30" y2="20" stroke="#495057" stroke-width="2"/>
+  
+  <!-- Sample numbers -->
+  <text x="6" y="9" font-family="Arial, sans-serif" font-size="6" fill="#495057" text-anchor="middle">1</text>
+  <text x="14" y="9" font-family="Arial, sans-serif" font-size="6" fill="#495057" text-anchor="middle">2</text>
+  <text x="22" y="9" font-family="Arial, sans-serif" font-size="6" fill="#495057" text-anchor="middle">3</text>
+  <text x="6" y="17" font-family="Arial, sans-serif" font-size="6" fill="#495057" text-anchor="middle">4</text>
+  <text x="14" y="17" font-family="Arial, sans-serif" font-size="6" fill="#495057" text-anchor="middle">5</text>
+  <text x="22" y="17" font-family="Arial, sans-serif" font-size="6" fill="#495057" text-anchor="middle">6</text>
+  <text x="6" y="25" font-family="Arial, sans-serif" font-size="6" fill="#495057" text-anchor="middle">7</text>
+  <text x="14" y="25" font-family="Arial, sans-serif" font-size="6" fill="#495057" text-anchor="middle">8</text>
+  <text x="22" y="25" font-family="Arial, sans-serif" font-size="6" fill="#495057" text-anchor="middle">9</text>
+</svg> 

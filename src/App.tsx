@@ -3,6 +3,7 @@ import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableData
 import BoardManager from './components/BoardManager'
 import LogManager from './components/LogManager'
 import ControlPanel from './components/ControlPanel'
+import Instructions from './components/Instructions'
 import { useSudokuSolver } from './hooks/useSudokuSolver'
 import { BoardManagerRef, LogManagerRef } from './models'
 import './App.css'
@@ -21,6 +22,7 @@ const App: React.FC = () => {
     // Start collapsed on mobile devices, expanded on desktop
     return window.innerWidth <= 768
   })
+  const [isInstructionsVisible, setIsInstructionsVisible] = useState(false)
   
   const boardManagerRef = useRef<BoardManagerRef>(null)
   const logManagerRef = useRef<LogManagerRef>(null)
@@ -297,6 +299,11 @@ const App: React.FC = () => {
       <header className="App-header">
         <h1 className="title">Sufusku</h1>
       </header>
+      
+      <Instructions 
+        isVisible={isInstructionsVisible}
+        onToggle={() => setIsInstructionsVisible(!isInstructionsVisible)}
+      />
       
       <main className="main-content">
         <div className="game-container">
