@@ -1,0 +1,924 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Permanent+Marker&display=swap');
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.App {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 15px;
+  text-align: center;
+}
+
+.App-header {
+  margin-bottom: 20px;
+}
+
+.title {
+  margin-bottom: 20px;
+  color: #333;
+  font-family: 'Fredoka One', cursive;
+  font-size: 2.8rem;
+  text-shadow: 2px 2px 0px #ff6b6b, 4px 4px 0px #4ecdc4;
+  letter-spacing: 1px;
+  transform: rotate(-2deg);
+}
+
+.main-content {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.grid-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* Comprehensive override for CoreUI table styles to ensure square cells */
+.grid-container .table,
+.grid-container .table-responsive,
+.grid-container .table-responsive .table {
+  width: auto !important;
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+  max-width: none !important;
+}
+
+/* Ensure the table doesn't expand beyond its content */
+.grid-container table {
+  width: auto !important;
+  max-width: none !important;
+  table-layout: fixed !important;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+}
+
+/* Desktop styles - these should be the default */
+.grid-container .table th,
+.grid-container .table td,
+.grid-container .table-responsive .table th,
+.grid-container .table-responsive .table td {
+  width: 70px !important;
+  height: 70px !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  min-width: 70px !important;
+  max-width: 70px !important;
+  min-height: 70px !important;
+  max-height: 70px !important;
+  line-height: 70px !important;
+}
+
+/* Force square cells for CoreUI components */
+.grid-container table,
+.grid-container table *,
+.grid-container .table,
+.grid-container .table *,
+.grid-container .table-responsive,
+.grid-container .table-responsive * {
+  box-sizing: border-box !important;
+}
+
+/* Ensure table rows don't affect cell height */
+.grid-container tr,
+.grid-container .table tr,
+.grid-container .table-responsive .table tr {
+  height: auto !important;
+  line-height: 1 !important;
+}
+
+/* Force cells to be exactly square - DESKTOP DEFAULT */
+.grid-container th,
+.grid-container td {
+  width: 70px !important;
+  height: 70px !important;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid #dee2e6;
+  font-size: 13px;
+  font-weight: 500;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+  min-width: 70px !important;
+  max-width: 70px !important;
+  min-height: 70px !important;
+  max-height: 70px !important;
+  line-height: 70px !important;
+}
+
+/* Override default header styling - DESKTOP DEFAULT */
+.grid-container thead th {
+  background-color: transparent !important;
+  font-weight: normal !important;
+  border: none !important;
+  padding: 1px 2px !important;
+  width: 70px !important;
+  height: 70px !important;
+  font-size: 13px !important;
+}
+
+/* Double borders for 3x3 groups - using data-cell class */
+/* Column borders - every 3rd data cell gets right border */
+.grid-container .data-cell:nth-of-type(3n),
+.grid-container td:nth-of-type(3n) {
+  border-right: 3px solid #333 !important;
+}
+
+/* Column borders - every 4th data cell gets left border */
+.grid-container .data-cell:nth-of-type(3n+1),
+.grid-container td:nth-of-type(3n+1) {
+  border-left: 3px solid #333 !important;
+}
+
+/* Row borders - skip the header row (first row) */
+.grid-container tr:nth-child(n+2):nth-child(3n+1) .data-cell,
+.grid-container tr:nth-child(n+2):nth-child(3n+1) td {
+  border-bottom: 3px solid #333 !important;
+}
+
+.grid-container tr:nth-child(n+2):nth-child(3n+2) .data-cell,
+.grid-container tr:nth-child(n+2):nth-child(3n+2) td {
+  border-top: 3px solid #333 !important;
+}
+
+/* Special cases for outer borders */
+.grid-container .data-cell:first-of-type,
+.grid-container td:first-of-type {
+  border-left: 3px solid #333 !important;
+}
+
+.grid-container .data-cell:last-of-type,
+.grid-container td:last-of-type {
+  border-right: 3px solid #333 !important;
+}
+
+.grid-container tr:nth-child(n+2):first-child .data-cell,
+.grid-container tr:nth-child(n+2):first-child td {
+  border-top: 3px solid #333 !important;
+}
+
+.grid-container tr:last-child .data-cell,
+.grid-container tr:last-child td {
+  border-bottom: 3px solid #333 !important;
+}
+
+.grid-container th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+}
+
+/* Remove all table cell hover backgrounds */
+.grid-container td:hover,
+.grid-container th:hover,
+.grid-container tr:hover,
+.data-cell:hover {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Log section styling */
+.log-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+
+/* LogContainer styling */
+.log-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  max-height: 100%;
+  height: 100%;
+  border: 1px solid #dee2e6;
+  background-color: #f8f9fa;
+  box-sizing: border-box;
+}
+
+.log-header {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  padding-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.log-entries {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 16px;
+  font-size: 12px;
+  font-family: monospace;
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+.log-empty {
+  color: #6c757d;
+  font-style: italic;
+}
+
+.log-footer {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #6c757d;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Custom scrollbar styling for log container */
+.log-section div::-webkit-scrollbar {
+  width: 8px;
+}
+
+.log-section div::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.log-section div::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.log-section div::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .main-content {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .title {
+    font-size: 2.2rem;
+    text-shadow: 2px 2px 0px #ff6b6b, 4px 4px 0px #4ecdc4;
+  }
+  
+  /* Only apply these changes on screens smaller than 1200px */
+  .grid-container th,
+  .grid-container td,
+  .grid-container .table th,
+  .grid-container .table td,
+  .grid-container .table-responsive .table th,
+  .grid-container .table-responsive .table td {
+    width: 55px !important;
+    height: 45px !important;
+    font-size: 9px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    min-width: 55px !important;
+    max-width: 55px !important;
+    min-height: 45px !important;
+    max-height: 45px !important;
+    line-height: 45px !important;
+  }
+  
+  /* Ensure headers are also square */
+  .grid-container thead th,
+  .grid-container tbody tr:first-child th {
+    width: 55px !important;
+    height: 45px !important;
+    font-size: 9px !important;
+  }
+}
+
+/* Tablet and small desktop */
+@media (max-width: 768px) {
+  .App {
+    padding: 10px;
+  }
+  
+  .title {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+  }
+  
+  .main-content {
+    gap: 10px;
+  }
+  
+  .game-container {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .right-panel {
+    height: auto;
+    max-height: none;
+    width: 100%;
+  }
+  
+  .control-panel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .control-button {
+    margin: 0;
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+  
+  .solve-button {
+    min-width: 100px;
+    width: auto;
+  }
+  
+  /* Hide the default log section on mobile */
+  .log-section {
+    display: none;
+  }
+  
+  /* Mobile-specific cell sizes */
+  .grid-container th,
+  .grid-container td,
+  .grid-container .table th,
+  .grid-container .table td,
+  .grid-container .table-responsive .table th,
+  .grid-container .table-responsive .table td {
+    width: 35px !important;
+    height: 22px !important;
+    font-size: 7px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    min-width: 35px !important;
+    max-width: 35px !important;
+    min-height: 22px !important;
+    max-height: 22px !important;
+    line-height: 22px !important;
+  }
+  
+  /* Ensure headers are also square */
+  .grid-container thead th,
+  .grid-container tbody tr:first-child th {
+    width: 35px !important;
+    height: 16px !important;
+    font-size: 7px !important;
+    margin: 2px !important;
+  }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+  .App {
+    padding: 5px;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .main-content {
+    gap: 8px;
+  }
+  
+  .game-container {
+    gap: 8px;
+  }
+  
+  .control-panel {
+    gap: 6px;
+  }
+  
+  .control-button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+  
+  .solve-button {
+    min-width: 80px;
+  }
+  
+  /* Hide the default log section on mobile */
+  .log-section {
+    display: none;
+  }
+  
+  /* Mobile-specific cell sizes */
+  .grid-container th,
+  .grid-container td,
+  .grid-container .table th,
+  .grid-container .table td,
+  .grid-container .table-responsive .table th,
+  .grid-container .table-responsive .table td {
+    width: 35px !important;
+    height: 22px !important;
+    font-size: 7px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    min-width: 35px !important;
+    max-width: 35px !important;
+    min-height: 22px !important;
+    max-height: 22px !important;
+    line-height: 22px !important;
+  }
+  
+  /* Ensure headers are also square */
+  .grid-container thead th,
+  .grid-container tbody tr:first-child th {
+    width: 30px !important;
+    height: 12px !important;
+    font-size: 6px !important;
+    margin: 2px !important;
+  }
+  
+  /* Adjust input font size for mobile */
+  .grid-container input {
+    font-size: 12px !important;
+  }
+  
+  /* Adjust label font size for mobile */
+  .grid-container .data-cell > div > div {
+    font-size: 4px !important;
+    line-height: 1 !important;
+  }
+  
+  /* Make log entries more compact on mobile */
+  .log-section {
+    max-height: 300px;
+  }
+}
+
+/* Portrait orientation adjustments for mobile */
+@media (max-width: 480px) and (orientation: portrait) {
+  /* Mobile-specific cell sizes for portrait */
+  .grid-container th,
+  .grid-container td,
+  .grid-container .table th,
+  .grid-container .table td,
+  .grid-container .table-responsive .table th,
+  .grid-container .table-responsive .table td {
+    width: 35px !important;
+    height: 8px !important;
+    font-size: 7px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    min-width: 35px !important;
+    max-width: 35px !important;
+    min-height: 20px !important;
+    max-height: 20px !important;
+    line-height: 20px !important;
+  }
+  
+  /* Ensure headers are also square */
+  .grid-container thead th,
+  .grid-container tbody tr:first-child th {
+    width: 35px !important;
+    height: 16px !important;
+    font-size: 7px !important;
+    margin: 2px !important;
+  }
+}
+
+/* Very small mobile devices in portrait */
+@media (max-width: 360px) and (orientation: portrait) {
+  /* Mobile-specific cell sizes for very small portrait */
+  .grid-container th,
+  .grid-container td,
+  .grid-container .table th,
+  .grid-container .table td,
+  .grid-container .table-responsive .table th,
+  .grid-container .table-responsive .table td {
+    width: 30px !important;
+    height: 6px !important;
+    font-size: 6px !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    min-height: 18px !important;
+    max-height: 18px !important;
+    line-height: 18px !important;
+  }
+  
+  /* Ensure headers are also square */
+  .grid-container thead th,
+  .grid-container tbody tr:first-child th {
+    width: 30px !important;
+    height: 14px !important;
+    font-size: 6px !important;
+    margin: 2px !important;
+  }
+  
+  /* Adjust input font size for very small mobile */
+  .grid-container input {
+    font-size: 10px !important;
+  }
+  
+  /* Adjust label font size for very small mobile */
+  .grid-container .data-cell > div > div {
+    font-size: 3px !important;
+    line-height: 1 !important;
+  }
+  
+  .title {
+    font-size: 1.2rem;
+  }
+  
+  .control-button {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+}
+
+.game-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.left-panel {
+  display: flex;
+  justify-content: center;
+}
+
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  height: 723px;
+  max-height: 723px;
+  min-height: 0;
+}
+
+.control-panel {
+  margin-bottom: 10px;
+}
+
+.control-button {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.solve-button {
+  min-width: 120px;
+  width: 120px;
+}
+
+/* Always show pink for error/duplicate cells, even on hover */
+.data-cell.error-cell,
+.data-cell.error-cell:hover {
+  background-color: #ffebee !important;
+}
+
+/* Always show orange for selected cells, even on hover */
+.data-cell.selected-cell,
+.data-cell.selected-cell:hover {
+  background-color: #fff3cd !important;
+}
+
+/* Ensure error cells still show pink even when highlighted */
+.data-cell.error-cell.highlighted-cell {
+  background-color: rgba(255, 235, 238, 0.8) !important;
+}
+
+/* Ensure selected cells still show orange even when highlighted */
+.data-cell.selected-cell.highlighted-cell {
+  background-color: #fff3cd !important;
+}
+
+/* Ensure frozen cells still show blue even when highlighted */
+.data-cell.frozen-cell.highlighted-cell {
+  background-color: #e3f2fd !important;
+}
+
+/* Ensure single option cells still show green even when highlighted */
+.data-cell.single-option-cell.highlighted-cell {
+  background-color: #e8f5e8 !important;
+}
+
+/* Ensure hover highlighting works properly */
+.data-cell[style*="linear-gradient"] {
+  background: var(--hover-background) !important;
+}
+
+/* Highlight selected cell's row and column in light gray */
+.data-cell.selected-rowcol {
+  background-color: #e9ecef !important;
+}
+
+/* Always show orange for selected cells, even on row/col highlight */
+.data-cell.selected-cell,
+.data-cell.selected-cell.selected-rowcol {
+  background-color: #fff3cd !important;
+}
+
+/* Always show blue for frozen cells, even on row/col highlight */
+.data-cell.frozen-cell,
+.data-cell.frozen-cell.selected-rowcol {
+  background-color: #e3f2fd !important;
+}
+
+/* Always show green for single option cells, even on row/col highlight */
+.data-cell.single-option-cell,
+.data-cell.single-option-cell.selected-rowcol {
+  background-color: #e8f5e8 !important;
+}
+
+/* Always show pink for error cells, even on row/col highlight */
+.data-cell.error-cell,
+.data-cell.error-cell.selected-rowcol {
+  background-color: #ffebee !important;
+}
+
+/* Ensure input elements don't overflow and maintain square dimensions */
+.grid-container input {
+  width: 100% !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+  font-size: inherit !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Collapsible log panel for mobile */
+.log-panel-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.log-toggle-button {
+  display: none;
+  position: fixed;
+  top: 20%;
+  right: 0;
+  transform: translateY(-50%);
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px 0 0 8px;
+  padding: 12px 8px;
+  cursor: pointer;
+  z-index: 10000;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  min-height: 120px;
+  font-size: 14px;
+  opacity: 1;
+}
+
+.log-toggle-button:hover {
+  background: #0056b3;
+  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.3);
+}
+
+.log-toggle-text {
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.log-panel {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.log-panel.expanded {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  opacity: 1;
+  overflow: visible;
+}
+
+.log-panel.collapsed {
+  max-height: 0;
+  opacity: 0;
+  display: none;
+}
+
+/* Mobile styles for collapsible log */
+@media (max-width: 768px) {
+  .log-toggle-button {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 10000 !important;
+  }
+  
+  .log-panel-container {
+    position: relative;
+  }
+  
+  .log-panel.expanded {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    width: 50vw !important;
+    height: 100vh !important;
+    background: white !important;
+    border-radius: 0 !important;
+    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.3) !important;
+    z-index: 9999 !important;
+    padding: 16px !important;
+    border: none !important;
+    border-left: 1px solid #dee2e6 !important;
+    overflow-y: auto !important;
+    transform: none !important;
+    max-height: none !important;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  
+  .log-panel.collapsed {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+  
+  .right-panel {
+    position: relative;
+  }
+  
+  /* Override LogContainer styles for mobile */
+  .log-panel .log-section {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  .log-panel .log-container {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 16px !important;
+  }
+  
+  .log-panel .log-entries {
+    border: none !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+  }
+  
+  /* Mobile styles for LogEntryMenu */
+  .log-entry-menu {
+    min-width: 150px !important;
+    max-width: 200px !important;
+  }
+  
+  .log-entry-menu .log-menu-button {
+    font-size: 10px !important;
+    padding: 6px 8px !important;
+    line-height: 1.2 !important;
+  }
+}
+
+/* Log entry menu styling */
+.log-entry-menu {
+  position: absolute !important;
+  top: calc(100% + 4px) !important;
+  right: 0 !important;
+  background-color: white !important;
+  border: 1px solid #dee2e6 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+  z-index: 10000 !important;
+  min-width: 200px !important;
+  max-width: 250px !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+}
+
+.log-menu-button {
+  width: 100% !important;
+  padding: 10px 16px !important;
+  border: none !important;
+  background: none !important;
+  text-align: left !important;
+  cursor: pointer !important;
+  font-size: 13px !important;
+  color: #333 !important;
+  transition: background-color 0.2s ease !important;
+  white-space: nowrap !important;
+  font-weight: 500 !important;
+  display: block !important;
+}
+
+.log-menu-button:first-child {
+  border-bottom: 1px solid #e9ecef !important;
+}
+
+.log-menu-button:hover {
+  background-color: #f8f9fa !important;
+  color: #dc3545 !important;
+}
+
+.log-menu-button:active {
+  background-color: #e9ecef !important;
+}
+
+/* Log menu toggle button styling */
+.log-menu-toggle-button {
+  background: none !important;
+  border: none !important;
+  font-size: 16px !important;
+  cursor: pointer !important;
+  padding: 2px 6px !important;
+  border-radius: 3px !important;
+  color: #666 !important;
+  margin-left: 8px !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.log-menu-toggle-button:hover {
+  background-color: #dee2e6 !important;
+}
+
+/* Log entry container styling for proper menu positioning */
+.log-entries > div {
+  position: relative !important;
+}
+
