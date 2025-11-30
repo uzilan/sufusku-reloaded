@@ -126,11 +126,7 @@ const GridCell: React.FC<GridCellProps> = ({
     }
   }
 
-  const handleClick = () => {
-    if (onCellClick) {
-      onCellClick(rowIndex, colIndex)
-    }
-  }
+  // click is handled inline on the outer div
 
   const handleFocus = () => {
     if (onCellClick) {

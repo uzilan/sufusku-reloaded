@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { CCard, CCardHeader, CCardBody, CButton, CListGroup, CListGroupItem } from '@coreui/react';
 
 interface InstructionsProps {

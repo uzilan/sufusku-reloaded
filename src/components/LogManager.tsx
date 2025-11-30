@@ -11,7 +11,7 @@ const LogManager = forwardRef<LogManagerRef, LogManagerProps>(({
 }, ref) => {
   // Expose addLog through ref for backward compatibility
   useImperativeHandle(ref, () => ({
-    addLog: (message: string, type: string, hasError?: boolean) => {
+    addLog: (_message: string, _type: string, _hasError?: boolean) => {
       // This is now handled by the parent component
     }
   }))

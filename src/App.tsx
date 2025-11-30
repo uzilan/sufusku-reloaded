@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell, CButton, CAlert } from '@coreui/react'
+import { CAlert } from '@coreui/react'
 import BoardManager from './components/BoardManager'
 import LogManager from './components/LogManager'
 import ControlPanel from './components/ControlPanel'
@@ -17,7 +17,7 @@ const App: React.FC = () => {
   const [selectedLog, setSelectedLog] = useState<number | null>(null)
   const [selectedCell, setSelectedCell] = useState<[number, number] | null>(null)
   const [logIdCounter, setLogIdCounter] = useState(1)
-  const [isFrozen, setIsFrozen] = useState(false)
+  const [_isFrozen, setIsFrozen] = useState(false)
   const [isInstructionsVisible, setIsInstructionsVisible] = useState(false)
   
   const boardManagerRef = useRef<BoardManagerRef>(null)
@@ -26,17 +26,7 @@ const App: React.FC = () => {
   
   const { findCorrectValue, showAlert, hideAlert, alertVisible, alertMessage } = useSudokuSolver(board)
 
-  const addLog = (message: string, type: string = 'info', hasError: boolean = false) => {
-    const newLog = {
-      id: logIdCounter,
-      message,
-      type,
-      hasError,
-      boardState: board.map(row => [...row])
-    }
-    setLogs(prev => [...prev, newLog])
-    setLogIdCounter(prev => prev + 1)
-  }
+  // removed unused addLog (use addLogWithBoardState instead)
 
   const addLogWithBoardState = (message: string, type: string = 'info', hasError: boolean = false, boardState: number[][]) => {
     const newLog = {
@@ -195,7 +185,7 @@ const App: React.FC = () => {
     setSelectedLog(null)
 
     // Start with the current board state
-    let replayBoard = board.map(row => [...row])
+    const replayBoard = board.map(row => [...row])
     
     // Parse the removed log message to find which cell was changed
     // Format: "A1: 1", "B2: deleted", etc.
@@ -274,20 +264,22 @@ const App: React.FC = () => {
     window.addEventListener('resize', onResize)
 
     // Observe the control panel size changes (e.g., label changes, wrapping)
-    const RO: any = (window as any).ResizeObserver
-    const ro: ResizeObserver | null = RO ? new RO(() => setControlsHeightVar()) : null
-    if (ro && controlsRef.current) {
-      ro.observe(controlsRef.current)
+    const win = window as Window & typeof globalThis
+    const RO = win.ResizeObserver
+    const targetEl = controlsRef.current
+    const ro: ResizeObserver | null = RO ? new RO(() => { setControlsHeightVar() }) : null
+    if (ro && targetEl) {
+      ro.observe(targetEl)
     }
 
     return () => {
       window.removeEventListener('resize', onResize)
       if (ro) {
-        if (controlsRef.current) {
-          try { ro.unobserve(controlsRef.current) } catch {}
+        if (targetEl) {
+          try { ro.unobserve(targetEl) } catch {}
         }
         // Ensure observer is disconnected to avoid leaks
-        try { (ro as any).disconnect?.() } catch {}
+        try { ro.disconnect?.() } catch {}
       }
     }
   }, [])
