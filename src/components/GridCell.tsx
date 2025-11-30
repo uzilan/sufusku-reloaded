@@ -22,11 +22,8 @@ const GridCell: React.FC<GridCellProps> = ({
   }, [value])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(`handleInputChange called for cell (${rowIndex},${colIndex}): value="${e.target.value}"`)
-    
     // Don't allow changes if frozen
     if (isFrozen) {
-      console.log('Input change blocked - cell is frozen')
       return
     }
     
@@ -36,12 +33,9 @@ const GridCell: React.FC<GridCellProps> = ({
     if (newValue === '' || (/^[1-9]$/.test(newValue))) {
       setInputValue(newValue)
       const numValue = newValue === '' ? 0 : parseInt(newValue, 10)
-      console.log(`Calling onValueChange: row=${rowIndex}, col=${colIndex}, value=${numValue}`)
       if (onValueChange) {
         onValueChange(rowIndex, colIndex, numValue)
       }
-    } else {
-      console.log('Input change blocked - invalid value')
     }
   }
 

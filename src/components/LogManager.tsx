@@ -13,7 +13,6 @@ const LogManager = forwardRef<LogManagerRef, LogManagerProps>(({
   useImperativeHandle(ref, () => ({
     addLog: (message: string, type: string, hasError?: boolean) => {
       // This is now handled by the parent component
-      console.log('addLog called from ref - should be handled by parent')
     }
   }))
 

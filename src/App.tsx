@@ -51,19 +51,12 @@ const App: React.FC = () => {
   }
 
   const handleCellChange = (row: number, col: number, value: number) => {
-    console.log(`handleCellChange called: row=${row}, col=${col}, value=${value}`)
-    console.log('Frozen cells:', Array.from(frozenCells))
-    console.log('Is frozen:', isFrozen)
-    console.log('Is cell frozen:', frozenCells.has(`${row}-${col}`))
-    
     if (frozenCells.has(`${row}-${col}`)) {
-      console.log('Cell change blocked - cell is frozen')
       return
     }
 
     const newBoard = board.map(rowArray => [...rowArray])
     newBoard[row][col] = value
-    console.log(`Setting board[${row}][${col}] = ${value}`)
     setBoard(newBoard)
 
     // Convert coordinates to letter-number format (e.g., A1, B2, etc.)
@@ -195,7 +188,6 @@ const App: React.FC = () => {
 
   const handleRemoveLog = (logId: number) => {
     const logIndex = logs.findIndex(log => log.id === logId)
-    console.log('Removing log with ID:', logId, 'at index:', logIndex)
     
     const removedLog = logs[logIndex]
     const newLogs = logs.filter(log => log.id !== logId)
@@ -219,33 +211,25 @@ const App: React.FC = () => {
       const col = colLetter.charCodeAt(0) - 65 // A=0, B=1, etc.
       const row = rowNumber - 1 // 1-based to 0-based
       
-      console.log(`Removing change: cell [${row}][${col}] = ${value}`)
-      
       if (value === 'deleted') {
         // If it was a deletion, we need to find what the value was before
         // Look at the previous log's board state
         if (logIndex > 0) {
           const previousLog = logs[logIndex - 1]
           replayBoard[row][col] = previousLog.boardState[row][col]
-          console.log(`Reverting to previous value: ${previousLog.boardState[row][col]}`)
         } else {
           replayBoard[row][col] = 0
-          console.log('Reverting to 0 (empty)')
         }
       } else {
         // If it was a value set, revert to the previous value
         if (logIndex > 0) {
           const previousLog = logs[logIndex - 1]
           replayBoard[row][col] = previousLog.boardState[row][col]
-          console.log(`Reverting to previous value: ${previousLog.boardState[row][col]}`)
         } else {
           replayBoard[row][col] = 0
-          console.log('Reverting to 0 (empty)')
         }
       }
     }
-    
-    console.log('Final replay board:', replayBoard)
     setBoard(replayBoard)
   }
 

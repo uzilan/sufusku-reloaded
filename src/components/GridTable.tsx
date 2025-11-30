@@ -139,11 +139,6 @@ const GridTable: React.FC<GridTableProps> = ({
   const getSingleOptionCells = useMemo(() => {
     const singleOptions = new Set<string>()
     
-    console.log('Current board state:')
-    board.forEach((row, rowIndex) => {
-      console.log(`Row ${rowIndex}:`, row)
-    })
-    
     for (let row = 0; row < size; row++) {
       for (let col = 0; col < size; col++) {
         // Only check empty cells
@@ -184,15 +179,10 @@ const GridTable: React.FC<GridTableProps> = ({
           
           if (allNumbers.size === 1) {
             singleOptions.add(`${row}-${col}`)
-            console.log(`Single option cell: (${row},${col}) with value ${Array.from(allNumbers)[0]}`)
           }
-        } else {
-          console.log(`Cell (${row},${col}) is filled with value ${board[row][col]}`)
         }
       }
     }
-    
-    console.log('Single option cells:', Array.from(singleOptions))
     return singleOptions
   }, [board, size])
 

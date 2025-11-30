@@ -8,8 +8,6 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   onSolve,
   selectedCell
 }) => {
-  console.log('ControlPanel render - selectedCell:', selectedCell)
-  
   // Convert selectedCell coordinates to letter-number format for display
   const getSelectedCellDisplay = (): string => {
     if (!selectedCell) return ''
