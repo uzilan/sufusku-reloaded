@@ -11,8 +11,6 @@ export default defineConfig([
     files: ['**/*.{js,jsx}'],
     extends: [
       js.configs.recommended,
-      reactHooks.configs['recommended-latest'],
-      reactRefresh.configs.vite,
     ],
     languageOptions: {
       ecmaVersion: 2020,
@@ -23,8 +21,17 @@ export default defineConfig([
         sourceType: 'module',
       },
     },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      // React Hooks rules
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      // React Refresh rule to avoid accidentally exporting non-components during HMR
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   },
 
@@ -33,11 +40,13 @@ export default defineConfig([
     files: ['**/*.{ts,tsx}'],
     extends: [
       ...tseslint.configs.recommended,
-      reactHooks.configs['recommended-latest'],
-      reactRefresh.configs.vite,
     ],
     languageOptions: {
       globals: globals.browser,
+    },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
     },
     rules: {
       '@typescript-eslint/no-unused-vars': [
@@ -55,6 +64,11 @@ export default defineConfig([
       '@typescript-eslint/prefer-nullish-coalescing': 'off',
       '@typescript-eslint/restrict-template-expressions': 'off',
       '@typescript-eslint/array-type': 'off',
+      // React Hooks rules
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      // React Refresh rule
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
     },
   },
 ])
