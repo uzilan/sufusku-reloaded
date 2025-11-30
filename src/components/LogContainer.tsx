@@ -49,9 +49,6 @@ const LogContainer: React.FC<LogContainerProps> = ({
         )}
       </div>
       
-      <div className="log-footer">
-        Showing {displayLogs.length} of {logs.length} logs
-      </div>
     </div>
   )
 }

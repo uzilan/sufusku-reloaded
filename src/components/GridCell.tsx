@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { CTableDataCell } from '@coreui/react'
 import { GridCellProps } from '../models'
 
 const GridCell: React.FC<GridCellProps> = ({ 
@@ -179,16 +178,35 @@ const GridCell: React.FC<GridCellProps> = ({
     return classes.join(' ')
   }
 
+  // Inline border styling to recreate Sudoku thick borders in CSS Grid
+  const getBorderStyle = (): React.CSSProperties => {
+    const styles: React.CSSProperties = {
+      position: 'relative',
+      padding: 0,
+      cursor: isFrozen ? 'not-allowed' : 'pointer',
+      transition: 'background-color 0.2s',
+      border: '1px solid #dee2e6'
+    }
+    // Thick border after each 3rd column
+    if ((colIndex + 1) % 3 === 0 && colIndex !== 8) {
+      styles.borderRight = '3px solid #333'
+    }
+    // Thick border after each 3rd row
+    if ((rowIndex + 1) % 3 === 0 && rowIndex !== 8) {
+      styles.borderBottom = '3px solid #333'
+    }
+    // Outer borders
+    if (colIndex === 0) styles.borderLeft = '3px solid #333'
+    if (rowIndex === 0) styles.borderTop = '3px solid #333'
+    if (colIndex === 8) styles.borderRight = '3px solid #333'
+    if (rowIndex === 8) styles.borderBottom = '3px solid #333'
+    return styles
+  }
+
   return (
-    <CTableDataCell
+    <div
       className={getCellClasses()}
-      style={{
-        position: 'relative',
-        border: '1px solid #dee2e6',
-        padding: 0,
-        cursor: isFrozen ? 'not-allowed' : 'pointer',
-        transition: 'background-color 0.2s',
-      }}
+      style={getBorderStyle()}
       onClick={() => {
         if (onCellClick && !isFrozen) {
           onCellClick(rowIndex, colIndex)
@@ -245,7 +263,7 @@ const GridCell: React.FC<GridCellProps> = ({
           </div>
         )}
       </div>
-    </CTableDataCell>
+    </div>
   )
 }
 

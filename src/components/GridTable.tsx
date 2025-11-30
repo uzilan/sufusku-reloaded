@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react'
-import { CTable, CTableBody, CTableRow, CTableHeaderCell } from '@coreui/react'
 import GridCell from './GridCell'
 import { GridTableProps } from '../models'
 
@@ -207,62 +206,19 @@ const GridTable: React.FC<GridTableProps> = ({
   const columnHeaders = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
 
   return (
-    <CTable bordered responsive>
-      <CTableBody>
-        {/* Column headers row */}
-        <CTableRow>
-          <CTableHeaderCell 
-            style={{ 
-              width: '40px', 
-              height: '40px', 
-              textAlign: 'center', 
-              backgroundColor: '#f8f9fa',
-              border: '2px solid #dee2e6',
-              fontWeight: 'bold',
-              fontSize: '14px'
-            }}
-          >
-            {/* Empty cell for top-left corner */}
-          </CTableHeaderCell>
-          {columnHeaders.map((header, index) => (
-            <CTableHeaderCell 
-              key={header}
-              style={{ 
-                width: '40px', 
-                height: '40px', 
-                textAlign: 'center', 
-                backgroundColor: '#f8f9fa',
-                border: '2px solid #dee2e6',
-                fontWeight: 'bold',
-                fontSize: '14px',
-                color: '#495057'
-              }}
-            >
-              {header}
-            </CTableHeaderCell>
-          ))}
-        </CTableRow>
-        
-        {/* Data rows */}
+    <div className="sudoku-board">
+      <div className="sudoku-grid">
+        {/* Top-left empty header */}
+        <div className="sudoku-header sudoku-header-corner" />
+        {/* Column headers */}
+        {columnHeaders.map((header) => (
+          <div key={`col-${header}`} className="sudoku-header sudoku-header-col">{header}</div>
+        ))}
+
+        {/* Rows with row header + 9 cells */}
         {board.map((row, rowIndex) => (
-          <CTableRow key={rowIndex}>
-            {/* Row header */}
-            <CTableHeaderCell 
-              style={{ 
-                width: '40px', 
-                height: '40px', 
-                textAlign: 'center', 
-                backgroundColor: '#f8f9fa',
-                border: '2px solid #dee2e6',
-                fontWeight: 'bold',
-                fontSize: '14px',
-                color: '#495057'
-              }}
-            >
-              {rowIndex + 1}
-            </CTableHeaderCell>
-            
-            {/* Data cells */}
+          <React.Fragment key={`row-${rowIndex}`}>
+            <div className="sudoku-header sudoku-header-row">{rowIndex + 1}</div>
             {row.map((cellValue, colIndex) => {
               const availableNumbers = getAvailableNumbers(rowIndex, colIndex)
               return (
@@ -282,10 +238,10 @@ const GridTable: React.FC<GridTableProps> = ({
                 />
               )
             })}
-          </CTableRow>
+          </React.Fragment>
         ))}
-      </CTableBody>
-    </CTable>
+      </div>
+    </div>
   )
 }
 

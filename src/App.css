@@ -76,6 +76,124 @@
   justify-content: center;
 }
 
+/* Global layout reset to prevent unwanted page scrollbars and ensure white background */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  overflow-x: hidden; /* prevent sideways scroll */
+  /* Prevent page (app) vertical scrolling; only designated areas like the log should scroll */
+  overflow-y: hidden;
+}
+
+.App {
+  background: #fff;
+  min-height: 100vh;
+  width: 100%;
+  /* Do not hide vertical overflow here; let page scroll when needed */
+}
+
+/* Responsive CSS Grid board (replaces table-based layout on mobile and desktop) */
+:root {
+  --board-size: min(92vw, 92vh, 560px);
+  /* Make headers smaller than data cells */
+  --header: clamp(10px, calc(var(--board-size) / 24), 20px);
+  /* Compute data cell size from remaining space so the 9x9 area grows */
+  --cell: clamp(28px, calc((var(--board-size) - var(--header)) / 9), 64px);
+  --cell-font: clamp(12px, calc(var(--cell) * 0.42), 20px);
+  --header-font: clamp(10px, calc(var(--cell) * 0.32), 16px);
+  /* Max height for activity log panel in normal flow */
+  --log-max-height: 34vh;
+}
+
+/* Make the log panel taller on desktop screens while keeping mobile/short heights unchanged */
+@media (min-width: 1024px) and (min-height: 700px) {
+  :root {
+    --log-max-height: 50vh;
+  }
+}
+
+/* Fit-to-viewport tuning for small phone heights while keeping page non-scrollable */
+@media (max-height: 740px) {
+  :root {
+    /* Reduce board footprint so the full app fits without body scroll */
+    --board-size: min(92vw, 56vh, 500px);
+    --header: clamp(8px, calc(var(--board-size) / 28), 16px);
+    --cell: clamp(24px, calc((var(--board-size) - var(--header)) / 9), 56px);
+    --cell-font: clamp(11px, calc(var(--cell) * 0.40), 18px);
+    --header-font: clamp(9px, calc(var(--cell) * 0.30), 14px);
+    --log-max-height: 24vh;
+  }
+  .App { padding: 10px; }
+  .title { font-size: 2rem; margin-bottom: 10px; }
+  .main-content { gap: 10px; margin-top: 10px; }
+}
+
+@media (max-height: 660px), (max-width: 380px) {
+  :root {
+    /* Extra compact on very small iPhones */
+    --board-size: min(90vw, 50vh, 440px);
+    --header: clamp(6px, calc(var(--board-size) / 32), 14px);
+    --cell: clamp(22px, calc((var(--board-size) - var(--header)) / 9), 50px);
+    --cell-font: clamp(10px, calc(var(--cell) * 0.38), 17px);
+    --header-font: clamp(8px, calc(var(--cell) * 0.28), 13px);
+    --log-max-height: 24vh;
+  }
+  .App { padding: 6px; }
+  .title { font-size: 1.6rem; margin-bottom: 8px; }
+  .main-content { gap: 8px; margin-top: 8px; }
+}
+
+/* Contain vertical overflow within the app; only log list should scroll */
+.main-content { /* allow content to flow; no clipping */ }
+.right-panel { /* allow content to flow; no clipping */ }
+
+.sudoku-board {
+  width: var(--board-size);
+  margin: 0 auto;
+}
+
+.sudoku-grid {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  /* First track is header, then 9 equal-sized data cells derived from --cell */
+  grid-template-columns: var(--header) repeat(9, var(--cell));
+  grid-template-rows: var(--header) repeat(9, var(--cell));
+  user-select: none;
+}
+
+.sudoku-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  color: #495057;
+  font-weight: bold;
+  font-size: var(--header-font);
+  border: 1px solid #dee2e6;
+  padding: 0 2px;
+}
+
+.sudoku-header-corner {
+  background: transparent;
+  border: none;
+}
+
+/* Grid cells rendered by GridCell.tsx */
+.data-cell {
+  width: 100%;
+  height: 100%;
+  display: block;
+  box-sizing: border-box;
+}
+
+.data-cell input {
+  font-size: 16px; /* Prevent iOS zoom */
+}
+
 /* Comprehensive override for CoreUI table styles to ensure square cells */
 .grid-container .table,
 .grid-container .table-responsive,
@@ -163,50 +281,9 @@
   font-size: 13px !important;
 }
 
-/* Double borders for 3x3 groups - using data-cell class */
-/* Column borders - every 3rd data cell gets right border */
-.grid-container .data-cell:nth-of-type(3n),
-.grid-container td:nth-of-type(3n) {
-  border-right: 3px solid #333 !important;
-}
-
-/* Column borders - every 4th data cell gets left border */
-.grid-container .data-cell:nth-of-type(3n+1),
-.grid-container td:nth-of-type(3n+1) {
-  border-left: 3px solid #333 !important;
-}
-
-/* Row borders - skip the header row (first row) */
-.grid-container tr:nth-child(n+2):nth-child(3n+1) .data-cell,
-.grid-container tr:nth-child(n+2):nth-child(3n+1) td {
-  border-bottom: 3px solid #333 !important;
-}
-
-.grid-container tr:nth-child(n+2):nth-child(3n+2) .data-cell,
-.grid-container tr:nth-child(n+2):nth-child(3n+2) td {
-  border-top: 3px solid #333 !important;
-}
-
-/* Special cases for outer borders */
-.grid-container .data-cell:first-of-type,
-.grid-container td:first-of-type {
-  border-left: 3px solid #333 !important;
-}
-
-.grid-container .data-cell:last-of-type,
-.grid-container td:last-of-type {
-  border-right: 3px solid #333 !important;
-}
-
-.grid-container tr:nth-child(n+2):first-child .data-cell,
-.grid-container tr:nth-child(n+2):first-child td {
-  border-top: 3px solid #333 !important;
-}
-
-.grid-container tr:last-child .data-cell,
-.grid-container tr:last-child td {
-  border-bottom: 3px solid #333 !important;
-}
+/* Removed legacy table-based 3x3 border rules that targeted .data-cell
+   to avoid conflicting thick borders in the new CSS Grid layout. Borders
+   are now handled inline in GridCell.tsx. */
 
 .grid-container th {
   background-color: #f8f9fa;
@@ -229,7 +306,7 @@
   flex-direction: column;
   flex: 1;
   min-height: 0;
-  height: 100%;
+  height: auto; /* avoid forcing extra height that can get clipped */
 }
 
 /* LogContainer styling */
@@ -238,35 +315,44 @@
   flex-direction: column;
   flex: 1;
   min-height: 0;
-  max-height: 100%;
-  height: 100%;
-  border: 1px solid #dee2e6;
-  background-color: #f8f9fa;
+  /* Let the inner list control height; avoid ambiguous 100% heights */
+  max-height: none;
+  height: auto;
+  /* Remove outer panel chrome; keep only inner list (.log-entries) styled */
+  border: none;
+  background-color: transparent;
   box-sizing: border-box;
 }
 
 .log-header {
-  margin: 0 0 16px 0;
-  font-size: 18px;
-  font-weight: bold;
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  line-height: 1.1;
+  font-weight: 600;
   color: #333;
-  padding-bottom: 8px;
+  padding-bottom: 2px;
   flex-shrink: 0;
 }
 
 .log-entries {
   flex: 1;
   min-height: 0;
+  /* Make the list itself the scroll container with a fixed height cap */
+  height: var(--log-max-height);
+  max-height: var(--log-max-height);
   overflow-y: auto;
   overflow-x: hidden;
   background-color: #fff;
   border: 1px solid #dee2e6;
   border-radius: 4px;
-  padding: 16px;
+  padding: 8px;
   font-size: 12px;
   font-family: monospace;
   scrollbar-width: thin;
   scrollbar-color: #c1c1c1 #f1f1f1;
+  /* Keep layout stable when scrollbars appear */
+  scrollbar-gutter: stable both-edges;
+  -webkit-overflow-scrolling: touch;
 }
 
 .log-empty {
@@ -274,13 +360,6 @@
   font-style: italic;
 }
 
-.log-footer {
-  margin-top: 8px;
-  font-size: 11px;
-  color: #6c757d;
-  text-align: center;
-  flex-shrink: 0;
-}
 
 /* Custom scrollbar styling for log container */
 .log-section div::-webkit-scrollbar {
@@ -345,6 +424,9 @@
 
 /* Tablet and small desktop */
 @media (max-width: 768px) {
+  /* Remove previously reserved right-side gutter so no black/empty panel shows */
+  .main-content { padding-right: 0; }
+
   .App {
     padding: 10px;
   }
@@ -387,9 +469,9 @@
     width: auto;
   }
   
-  /* Hide the default log section on mobile */
+  /* Ensure the default log section remains visible on mobile */
   .log-section {
-    display: none;
+    display: flex;
   }
   
   /* Mobile-specific cell sizes */
@@ -455,9 +537,9 @@
     min-width: 80px;
   }
   
-  /* Hide the default log section on mobile */
+  /* Ensure the default log section remains visible on very small mobile */
   .log-section {
-    display: none;
+    display: flex;
   }
   
   /* Mobile-specific cell sizes */
@@ -608,8 +690,8 @@
 .right-panel {
   display: flex;
   flex-direction: column;
-  height: 723px;
-  max-height: 723px;
+  height: auto;
+  max-height: none;
   min-height: 0;
 }
 
@@ -714,7 +796,7 @@
   flex-direction: column;
   flex: 1;
   min-height: 0;
-  height: 100%;
+  height: auto; /* don’t force height that could be clipped */
   position: relative;
   width: 100%;
 }
@@ -752,102 +834,64 @@
 }
 
 .log-panel {
-  transition: all 0.3s ease;
-  overflow: hidden;
+  transition: all 0.2s ease;
+  display: block;
+  width: 100%;
+  position: static;
+  height: auto;
+  max-height: none; /* do not clip; inner list has the cap */
+  overflow: visible; /* let inner .log-entries handle scrolling */
 }
 
-.log-panel.expanded {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-  height: 100%;
-  opacity: 1;
-  overflow: visible;
-}
-
-.log-panel.collapsed {
-  max-height: 0;
-  opacity: 0;
-  display: none;
-}
-
-/* Mobile styles for collapsible log */
+/* Mobile styles for collapsible log: show in normal flow under buttons, with capped height */
 @media (max-width: 768px) {
-  .log-toggle-button {
-    display: flex !important;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    opacity: 1 !important;
-    visibility: visible !important;
-    z-index: 10000 !important;
-  }
-  
-  .log-panel-container {
-    position: relative;
-  }
-  
-  .log-panel.expanded {
-    position: fixed !important;
-    top: 0 !important;
-    right: 0 !important;
-    width: 50vw !important;
-    height: 100vh !important;
-    background: white !important;
-    border-radius: 0 !important;
-    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.3) !important;
-    z-index: 9999 !important;
-    padding: 16px !important;
+  .log-toggle-button { display: none !important; }
+
+  .log-panel-container { position: static; }
+
+  .log-panel {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important; /* prevent panel clipping */
+    background: transparent !important;
     border: none !important;
-    border-left: 1px solid #dee2e6 !important;
-    overflow-y: auto !important;
-    transform: none !important;
-    max-height: none !important;
-    display: block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    overflow: visible !important; /* inner list scrolls */
   }
-  
-  .log-panel.collapsed {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-  }
-  
-  .right-panel {
-    position: relative;
-  }
-  
-  /* Override LogContainer styles for mobile */
+
   .log-panel .log-section {
     display: block !important;
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
   }
-  
+
   .log-panel .log-container {
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
     max-width: none !important;
     margin: 0 !important;
+    /* Remove mobile outer panel chrome as well */
     border: none !important;
     border-radius: 0 !important;
-    padding: 16px !important;
+    padding: 0 !important;
+    background: transparent !important;
   }
-  
+
   .log-panel .log-entries {
-    border: none !important;
-    border-radius: 0 !important;
-    background-color: transparent !important;
+    /* Use the same capped height as desktop via CSS variable, so it shrinks on short phones */
+    height: var(--log-max-height) !important;
+    max-height: var(--log-max-height) !important;
+    overflow-y: auto !important;
   }
-  
+
   /* Mobile styles for LogEntryMenu */
   .log-entry-menu {
     min-width: 150px !important;
     max-width: 200px !important;
   }
-  
+
   .log-entry-menu .log-menu-button {
     font-size: 10px !important;
     padding: 6px 8px !important;
@@ -1053,3 +1097,24 @@
   }
 }
 
+
+/* Global page reset to remove dark body margins and background */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background: #ffffff; /* Ensure page background is white */
+}
+
+/* Ensure the app fills the viewport and stays white */
+.App {
+  background: #ffffff;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Prevent horizontal scroll that can reveal page background on the right */
+html, body {
+  overflow-x: hidden;
+}

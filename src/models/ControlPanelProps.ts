@@ -3,4 +3,4 @@ export interface ControlPanelProps {
   onFreezeBoard: () => void
   onSolve: () => void
   selectedCell: [number, number] | null
-} 
+}

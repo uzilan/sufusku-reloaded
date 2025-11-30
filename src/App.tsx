@@ -18,14 +18,11 @@ const App: React.FC = () => {
   const [selectedCell, setSelectedCell] = useState<[number, number] | null>(null)
   const [logIdCounter, setLogIdCounter] = useState(1)
   const [isFrozen, setIsFrozen] = useState(false)
-  const [isLogCollapsed, setIsLogCollapsed] = useState(() => {
-    // Start collapsed on mobile devices, expanded on desktop
-    return window.innerWidth <= 768
-  })
   const [isInstructionsVisible, setIsInstructionsVisible] = useState(false)
   
   const boardManagerRef = useRef<BoardManagerRef>(null)
   const logManagerRef = useRef<LogManagerRef>(null)
+  const controlsRef = useRef<HTMLDivElement>(null)
   
   const { findCorrectValue, showAlert, hideAlert, alertVisible, alertMessage } = useSudokuSolver(board)
 
@@ -256,10 +253,6 @@ const App: React.FC = () => {
     setSelectedCell([row, col])
   }
 
-  const toggleLogPanel = () => {
-    setIsLogCollapsed(!isLogCollapsed)
-  }
-
   // Global click handler to dismiss alert and clear selected cell
   useEffect(() => {
     const handleGlobalClick = (e: MouseEvent) => {
@@ -281,16 +274,37 @@ const App: React.FC = () => {
     }
   }, [alertVisible, hideAlert])
 
-  // Handle window resize to update log panel state
+  // No-op: log panel is always visible now, no resize handling needed
+
+  // Measure bottom control panel height and expose it as a CSS variable
   useEffect(() => {
-    const handleResize = () => {
-      const isMobile = window.innerWidth <= 768
-      setIsLogCollapsed(isMobile)
+    const setControlsHeightVar = () => {
+      const h = controlsRef.current?.offsetHeight || 0
+      document.documentElement.style.setProperty('--controls-height', `${h}px`)
     }
 
-    window.addEventListener('resize', handleResize)
+    setControlsHeightVar()
+
+    // Update on window resize
+    const onResize = () => setControlsHeightVar()
+    window.addEventListener('resize', onResize)
+
+    // Observe the control panel size changes (e.g., label changes, wrapping)
+    const RO: any = (window as any).ResizeObserver
+    const ro: ResizeObserver | null = RO ? new RO(() => setControlsHeightVar()) : null
+    if (ro && controlsRef.current) {
+      ro.observe(controlsRef.current)
+    }
+
     return () => {
-      window.removeEventListener('resize', handleResize)
+      window.removeEventListener('resize', onResize)
+      if (ro) {
+        if (controlsRef.current) {
+          try { ro.unobserve(controlsRef.current) } catch {}
+        }
+        // Ensure observer is disconnected to avoid leaks
+        try { (ro as any).disconnect?.() } catch {}
+      }
     }
   }, [])
 
@@ -318,23 +332,16 @@ const App: React.FC = () => {
             />
           </div>
           <div className="right-panel">
-            <ControlPanel
-              onClearBoard={handleClearBoard}
-              onFreezeBoard={handleFreezeBoard}
-              onSolve={handleSolve}
-              selectedCell={selectedCell}
-            />
+            <div ref={controlsRef} className="controls-anchor">
+              <ControlPanel
+                onClearBoard={handleClearBoard}
+                onFreezeBoard={handleFreezeBoard}
+                onSolve={handleSolve}
+                selectedCell={selectedCell}
+              />
+            </div>
             <div className="log-panel-container">
-              <button 
-                className="log-toggle-button"
-                onClick={toggleLogPanel}
-                aria-label={isLogCollapsed ? "Show log" : "Hide log"}
-              >
-                <span className="log-toggle-text">
-                  {isLogCollapsed ? "Show Log" : "Hide Log"}
-                </span>
-              </button>
-              <div className={`log-panel ${isLogCollapsed ? 'collapsed' : 'expanded'}`}>
+              <div className="log-panel" id="log-panel">
                 <LogManager
                   ref={logManagerRef}
                   logs={logs}
