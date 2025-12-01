@@ -293,6 +293,7 @@ const App: React.FC = () => {
       <Instructions 
         isVisible={isInstructionsVisible}
         onToggle={() => setIsInstructionsVisible(!isInstructionsVisible)}
+        hideToggle={alertVisible}
       />
       
       <main className="main-content">

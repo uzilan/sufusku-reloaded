@@ -4,19 +4,22 @@ import { CCard, CCardHeader, CCardBody, CButton, CListGroup, CListGroupItem } fr
 interface InstructionsProps {
   isVisible: boolean;
   onToggle: () => void;
+  hideToggle?: boolean;
 }
 
-const Instructions: React.FC<InstructionsProps> = ({ isVisible, onToggle }) => {
+const Instructions: React.FC<InstructionsProps> = ({ isVisible, onToggle, hideToggle = false }) => {
   return (
     <div className="instructions-container">
-      <CButton 
-        color="info" 
-        variant="outline" 
-        onClick={onToggle}
-        className="instructions-toggle"
-      >
-        {isVisible ? 'Hide Instructions' : 'Show Instructions'}
-      </CButton>
+      {!hideToggle && (
+        <CButton 
+          color="info" 
+          variant="outline" 
+          onClick={onToggle}
+          className="instructions-toggle"
+        >
+          {isVisible ? 'Hide Instructions' : 'Show Instructions'}
+        </CButton>
+      )}
       
       {isVisible && (
         <CCard className="instructions-card">
