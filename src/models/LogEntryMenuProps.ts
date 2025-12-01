@@ -4,4 +4,5 @@ export interface LogEntryMenuProps {
   onClose: () => void
   onDropEventsAfter?: (logId: number) => void
   onRemoveLog?: (logId: number) => void
-} 
+  anchorRect: DOMRect
+}

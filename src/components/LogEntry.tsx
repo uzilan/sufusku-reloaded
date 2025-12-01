@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { LogEntryProps } from '../models'
 import LogEntryMenu from './LogEntryMenu'
+import { createPortal } from 'react-dom'
 
 const LogEntry: React.FC<LogEntryProps> = ({
   log,
@@ -10,6 +11,34 @@ const LogEntry: React.FC<LogEntryProps> = ({
   onRemoveLog
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [anchorRect, setAnchorRect] = useState<DOMRect | null>(null)
+  const btnRef = useRef<HTMLButtonElement | null>(null)
+
+  const closeMenu = useCallback(() => setIsMenuOpen(false), [])
+
+  // Close on window scroll/resize so we never leave a mispositioned menu
+  useEffect(() => {
+    if (!isMenuOpen) return
+    const onScroll = () => setIsMenuOpen(false)
+    const onResize = () => setIsMenuOpen(false)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onResize)
+    // Also close when the log list (scroll container) scrolls
+    let cleanupContainer: (() => void) | null = null
+    if (btnRef.current) {
+      const container = btnRef.current.closest('.log-entries')
+      if (container) {
+        const onContainerScroll = () => setIsMenuOpen(false)
+        container.addEventListener('scroll', onContainerScroll, { passive: true })
+        cleanupContainer = () => container.removeEventListener('scroll', onContainerScroll)
+      }
+    }
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onResize)
+      if (cleanupContainer) cleanupContainer()
+    }
+  }, [isMenuOpen])
 
   const getLogTypeColor = (type: string): string => {
     switch (type) {
@@ -82,6 +111,7 @@ const LogEntry: React.FC<LogEntryProps> = ({
       </div>
       <button
         className="log-menu-toggle-button"
+        ref={btnRef}
         onMouseOver={(e) => {
           e.currentTarget.style.backgroundColor = '#dee2e6'
         }}
@@ -90,21 +120,26 @@ const LogEntry: React.FC<LogEntryProps> = ({
         }}
         onClick={(e) => {
           e.stopPropagation()
-          setIsMenuOpen(!isMenuOpen)
+          // Compute anchor rect for portal positioning
+          const rect = (e.currentTarget as HTMLButtonElement).getBoundingClientRect()
+          setAnchorRect(rect)
+          setIsMenuOpen((v) => !v)
         }}
       >
         ⋯
       </button>
       
       {/* Dropdown Menu */}
-      {isMenuOpen && (
+      {isMenuOpen && anchorRect && createPortal(
         <LogEntryMenu
           logId={log.id}
           isOpen={true}
           onDropEventsAfter={onDropEventsAfter}
           onRemoveLog={onRemoveLog}
-          onClose={() => setIsMenuOpen(false)}
-        />
+          onClose={closeMenu}
+          anchorRect={anchorRect}
+        />,
+        document.body
       )}
     </div>
   )

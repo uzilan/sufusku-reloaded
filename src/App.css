@@ -901,9 +901,7 @@ html, body, #root {
 
 /* Log entry menu styling */
 .log-entry-menu {
-  position: absolute !important;
-  top: calc(100% + 4px) !important;
-  right: 0 !important;
+  /* Positioning now handled inline (portal with fixed coords); remove absolute positioning */
   background-color: white !important;
   border: 1px solid #dee2e6 !important;
   border-radius: 6px !important;
