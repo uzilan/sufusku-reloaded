@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { GridCellProps } from '../models'
 
 const GridCell: React.FC<GridCellProps> = ({ 
@@ -15,6 +15,19 @@ const GridCell: React.FC<GridCellProps> = ({
   selectedCell
 }) => {
   const [inputValue, setInputValue] = useState(value === 0 ? '' : value.toString())
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const focusInputWithoutScroll = () => {
+    const y = window.scrollY
+    try {
+      inputRef.current?.focus({ preventScroll: true } as any)
+    } catch (_e) {
+      inputRef.current?.focus()
+    }
+    if (window.scrollY !== y) {
+      setTimeout(() => window.scrollTo(0, y), 0)
+    }
+  }
 
   // Update inputValue when value prop changes (e.g., when grid is reset)
   useEffect(() => {
@@ -106,7 +119,11 @@ const GridCell: React.FC<GridCellProps> = ({
         const targetIndex = targetRow * 9 + targetCol
         const targetInput = allInputs[targetIndex] as HTMLInputElement
         if (targetInput) {
-          targetInput.focus()
+          try {
+            (targetInput as HTMLInputElement).focus({ preventScroll: true } as any)
+          } catch (_e) {
+            (targetInput as HTMLInputElement).focus()
+          }
         }
       }
       
@@ -197,6 +214,18 @@ const GridCell: React.FC<GridCellProps> = ({
     <div
       className={getCellClasses()}
       style={getBorderStyle()}
+      onTouchStart={(e) => {
+        if (isFrozen) return
+        e.preventDefault()
+        if (onCellClick) onCellClick(rowIndex, colIndex)
+        focusInputWithoutScroll()
+      }}
+      onMouseDown={(e) => {
+        if (isFrozen) return
+        e.preventDefault()
+        if (onCellClick) onCellClick(rowIndex, colIndex)
+        focusInputWithoutScroll()
+      }}
       onClick={() => {
         if (onCellClick && !isFrozen) {
           onCellClick(rowIndex, colIndex)
@@ -209,6 +238,7 @@ const GridCell: React.FC<GridCellProps> = ({
         height: '100%'
       }}>
         <input
+          ref={inputRef}
           type="text"
           value={inputValue}
           onChange={handleInputChange}

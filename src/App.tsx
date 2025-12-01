@@ -28,6 +28,8 @@ const App: React.FC = () => {
 
   // removed unused addLog (use addLogWithBoardState instead)
 
+  // (Removed mobile scroll-to-top behavior)
+
   const addLogWithBoardState = (message: string, type: string = 'info', hasError: boolean = false, boardState: number[][]) => {
     const newLog = {
       id: logIdCounter,
@@ -64,6 +66,8 @@ const App: React.FC = () => {
     } else {
       addLogWithBoardState(`${cellPosition}: ${value}`, 'success', false, newBoard)
     }
+
+    // Removed automatic scroll-to-top on mobile after entering a number
   }
 
   const checkForDuplicates = (boardState: number[][], row: number, col: number, value: number): boolean => {
